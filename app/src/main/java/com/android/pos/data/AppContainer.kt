@@ -10,6 +10,7 @@ interface IAppContainer {
     /**
      * [loadDataContainer] create new data container by user id
      */
+
     fun loadDataContainer(id : Int)
 }
 

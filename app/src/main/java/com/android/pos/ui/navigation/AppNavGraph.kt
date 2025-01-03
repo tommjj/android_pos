@@ -24,13 +24,11 @@ fun AppNavGraph(
         modifier = modifier,
         startDestination = LoginDestination.route,
         enterTransition = {
-            // you can change whatever you want transition
             EnterTransition.None
         },
         exitTransition = {
-            // you can change whatever you want transition
             ExitTransition.None
-        }
+        },
     ) {
         composable(route = LoginDestination.route) {
             LoginScreen(
@@ -47,5 +45,6 @@ fun AppNavGraph(
                 }
             )
         }
+
     }
 }
