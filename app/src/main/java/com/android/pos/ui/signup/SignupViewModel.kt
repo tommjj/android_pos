@@ -18,6 +18,7 @@ class SignUpViewModel(private val userRepository: UserRepository) : ViewModel() 
     }
 
     suspend fun onConfirm() {
+        if (signUpState.isPadding) return
         signUpState = signUpState.copy(isPadding = true)
 
         val errors = signUpState.inputState.toSignUpError()
@@ -54,8 +55,8 @@ data class SignUpInputState(
 enum class SignUpError(val message: String) {
     USER_EXIST("User exist"),
     USER_NAME_INVALID("User name invalid"),
-    EMPTY_USERNAME("Username is empty"),
-    EMPTY_PASSWORD("Password is empty"),
+    EMPTY_USERNAME("Username is required"),
+    EMPTY_PASSWORD("Password is required"),
     PASSWORD_LENGTH_INVALID("Password must contain at least 7 characters"),
     EMPTY_CONFIRM_PASSWORD("Confirm password is empty"),
     PASSWORD_MISMATCH("Password mismatch"),

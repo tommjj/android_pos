@@ -214,7 +214,6 @@ fun CreateAccountBody(
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun CreateAccountScreenPreview() {

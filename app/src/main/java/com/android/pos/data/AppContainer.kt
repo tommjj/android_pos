@@ -8,10 +8,9 @@ interface IAppContainer {
     var dataContainer: IDataContainer?
 
     /**
-     * [loadDataContainer] create new data container by user id
+     * [initDataContainer] create new data container by user id
      */
-
-    fun loadDataContainer(id : Int)
+    fun initDataContainer(name: String)
 }
 
 class AppContainer(private val context: Context) : IAppContainer {
@@ -21,7 +20,7 @@ class AppContainer(private val context: Context) : IAppContainer {
 
     override var dataContainer: IDataContainer? = null
 
-    override fun loadDataContainer(id: Int) {
-        TODO("Not yet implemented")
+    override fun initDataContainer(name: String) {
+        val db = POSDatabase.getDatabase(context, name)
     }
 }

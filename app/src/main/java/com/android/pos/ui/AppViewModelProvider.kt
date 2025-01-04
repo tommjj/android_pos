@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.android.pos.PosApplication
+import com.android.pos.auth.Auth
 import com.android.pos.ui.login.LoginViewModel
 import com.android.pos.ui.signup.SignUpViewModel
 
@@ -16,7 +17,7 @@ object AppViewModelProvider {
     val Factory = viewModelFactory {
         // initialise LoginViewModel
         initializer {
-            LoginViewModel(posApplication().container.userRepository)
+            LoginViewModel(posApplication().auth)
         }
 
         // initialise SignUpViewModel
