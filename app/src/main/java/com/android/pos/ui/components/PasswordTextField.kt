@@ -29,7 +29,7 @@ fun PasswordTextField(
     label : @Composable() (() -> Unit)? = null,
     keyboardOptions : KeyboardOptions = KeyboardOptions.Default,
     shape: Shape = Shapes().small,
-    singleLine: Boolean = false,
+    singleLine: Boolean = true,
     maxLines: Int = if (singleLine) 1 else Int. MAX_VALUE,
     minLines: Int = 1,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors()

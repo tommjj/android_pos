@@ -8,9 +8,9 @@ interface IAppContainer {
     var dataContainer: IDataContainer?
 
     /**
-     * [initDataContainer] create new data container by user id
+     * [initDataContainer] create new data container by username
      */
-    fun initDataContainer(name: String)
+    fun initDataContainer(id: Int)
 }
 
 class AppContainer(private val context: Context) : IAppContainer {
@@ -20,7 +20,7 @@ class AppContainer(private val context: Context) : IAppContainer {
 
     override var dataContainer: IDataContainer? = null
 
-    override fun initDataContainer(name: String) {
-        val db = POSDatabase.getDatabase(context, name)
+    override fun initDataContainer(id: Int) {
+        val db = POSDatabase.getDatabase(context, id.toString())
     }
 }

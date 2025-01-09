@@ -1,5 +1,6 @@
 package com.android.pos.ui.signup
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -12,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,23 +32,30 @@ import com.android.pos.ui.components.PasswordTextField
 import com.android.pos.ui.navigation.NavigationDestination
 import kotlinx.coroutines.launch
 
+object SignUpDestination : NavigationDestination {
+    override val route = "SignUp"
+    override val titleRes = R.string.signup_title
+    override val at: String? = null
+}
+
 @Composable
 fun SignUpScreen(
+    modifier: Modifier = Modifier,
     navigateToLoginScreen: () -> Unit,
     viewModel: SignUpViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Scaffold() { innerPadding ->
+    Surface {
         CreateAccountBody(
-            modifier = Modifier.padding(innerPadding),
+            modifier = modifier,
             navigateToLoginScreen = navigateToLoginScreen,
             onCreate = {
                 coroutineScope.launch {
                     try {
                         viewModel.onConfirm()
-                        Toast.makeText(context ,"Sign up success", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Sign up success", Toast.LENGTH_SHORT).show()
                         navigateToLoginScreen()
                     } catch (err: Exception) {
                         Log.e("SignUpScreen", "onCreate: ${err.message}")
@@ -62,10 +71,7 @@ fun SignUpScreen(
     }
 }
 
-object SignUpDestination : NavigationDestination {
-    override val route = "SignUp"
-    override val titleRes = R.string.signup_title
-}
+
 
 @Composable
 fun CreateAccountBody(
@@ -75,7 +81,7 @@ fun CreateAccountBody(
     uiState: SignUpUiState = SignUpUiState(),
     onValueChange: (SignUpInputState) -> Unit = {},
 ) {
-    val usernameErrMess : String = remember(uiState.errorMessage) {
+    val usernameErrMess: String = remember(uiState.errorMessage) {
         when {
             uiState.errorMessage?.contains(SignUpError.USER_EXIST) == true -> SignUpError.USER_EXIST.message
             uiState.errorMessage?.contains(SignUpError.USER_NAME_INVALID) == true -> SignUpError.USER_NAME_INVALID.message
@@ -83,7 +89,7 @@ fun CreateAccountBody(
         }
     }
 
-    val passwordErrMess : String = remember (uiState.errorMessage) {
+    val passwordErrMess: String = remember(uiState.errorMessage) {
         when {
             uiState.errorMessage?.contains(SignUpError.EMPTY_PASSWORD) == true -> SignUpError.EMPTY_PASSWORD.message
             uiState.errorMessage?.contains(SignUpError.PASSWORD_LENGTH_INVALID) == true -> SignUpError.PASSWORD_LENGTH_INVALID.message
@@ -91,7 +97,7 @@ fun CreateAccountBody(
         }
     }
 
-    val confirmPasswordErrMess : String = remember (uiState.errorMessage) {
+    val confirmPasswordErrMess: String = remember(uiState.errorMessage) {
         when {
             uiState.errorMessage?.contains(SignUpError.EMPTY_CONFIRM_PASSWORD) == true -> SignUpError.EMPTY_CONFIRM_PASSWORD.message
             uiState.errorMessage?.contains(SignUpError.PASSWORD_MISMATCH) == true -> SignUpError.PASSWORD_MISMATCH.message
@@ -136,7 +142,7 @@ fun CreateAccountBody(
             value = uiState.inputState.username,
             onValueChange = { onValueChange(uiState.inputState.copy(username = it)) },
             label = { Text("Username") },
-            modifier =  Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             shape = Shapes().small

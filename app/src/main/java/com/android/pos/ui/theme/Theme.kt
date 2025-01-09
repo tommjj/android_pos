@@ -8,6 +8,8 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val LightColorScheme = lightColorScheme(
@@ -40,6 +42,7 @@ private val LightColorScheme = lightColorScheme(
     surfaceTint = md_theme_light_surfaceTint,
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
+    surfaceContainer = Color.White,
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -75,7 +78,6 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 
-
 @Composable
 fun PosTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -93,9 +95,11 @@ fun PosTheme(
         else -> LightColorScheme
     }
 
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
         content = content
     )
+
 }

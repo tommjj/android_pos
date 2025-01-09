@@ -19,7 +19,7 @@ class Auth(private val appContainer: IAppContainer) {
 
         if (user != null && user.password == password) {
             this.user = user.copy(password = "")
-            appContainer.initDataContainer(username)
+            appContainer.initDataContainer(user.id)
             return true
         }
         return false

@@ -15,6 +15,8 @@ data class Order(
     val totalPrice: Double,
     @ColumnInfo(defaultValue =  "('Created at' || CURRENT_TIMESTAMP)")
     val orderDate: Date,
+    @ColumnInfo(defaultValue =  "('Created at' || CURRENT_TIMESTAMP)")
+    val deliveryDate: Date,
 )
 
 @Entity(tableName = "order_products", primaryKeys = ["orderID", "productID"])

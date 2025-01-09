@@ -7,7 +7,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.android.pos.R
+import com.android.pos.ui.home.HomeDestination
+import com.android.pos.ui.home.HomeScreen
 import com.android.pos.ui.login.LoginDestination
 import com.android.pos.ui.login.LoginScreen
 import com.android.pos.ui.signup.SignUpDestination
@@ -22,7 +26,7 @@ import com.android.pos.ui.signup.SignUpScreen
 
 @Composable
 fun AppNavGraph(
-    navController: NavHostController =  rememberNavController(),
+    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -40,17 +44,44 @@ fun AppNavGraph(
             LoginScreen(
                 navigateToSignUpScreen = {
                     navController.navigate(SignUpDestination.route)
+                },
+                navigateToHomeScreen = {
+                    navController.navigate(AppDestination.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
-        composable(route = SignUpDestination.route) {
+        composable(route = SignUpDestination.route ) {
             SignUpScreen(
                 navigateToLoginScreen = {
-                    navController.navigate(LoginDestination.route)
+                    navController.navigate(LoginDestination.route) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
+        navigation(
+            route = AppDestination.route,
+            startDestination = HomeDestination.route,
+        ) {
+            composable(
+                route = HomeDestination.route
+            ) {
+                HomeScreen()
+            }
+        }
     }
+}
+
+object AppDestination : NavigationDestination {
+    override val route: String = "app"
+    override val titleRes: Int = R.string.app_name
+    override val at: String? = null
 }

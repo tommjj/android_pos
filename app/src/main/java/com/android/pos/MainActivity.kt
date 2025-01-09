@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             PosTheme(
-                dynamicColor = false
+                dynamicColor = false,
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),

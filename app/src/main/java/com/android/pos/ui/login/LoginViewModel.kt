@@ -1,14 +1,19 @@
 package com.android.pos.ui.login
 
+import android.content.SharedPreferences
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.android.pos.auth.Auth
-import kotlinx.coroutines.flow.firstOrNull
 
 class LoginViewModel(
     private val auth: Auth,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
-    var loginUiState by mutableStateOf(LoginUiState())
+    var loginUiState by mutableStateOf(LoginUiState(
+        inputState = LoginInputsState(
+            username = sharedPreferences.getString("username", "") ?: "",
+            password = sharedPreferences.getString("password", "") ?: "",
+    )))
         private set
 
     fun onInputChanged(loginInputs: LoginInputsState) {
@@ -53,12 +58,20 @@ class LoginViewModel(
             isValidate = true,
             isPadding = false
         )
+
+        if (loginUiState.inputState.isRememberMe) {
+            sharedPreferences.edit()
+                .putString("username", loginUiState.inputState.username)
+                .putString("password", loginUiState.inputState.password)
+                .apply()
+        }
     }
 }
 
 data class LoginInputsState(
     val username: String = "",
     val password: String = "",
+    val isRememberMe: Boolean = false,
 )
 
 fun LoginInputsState.isValid(): Boolean {

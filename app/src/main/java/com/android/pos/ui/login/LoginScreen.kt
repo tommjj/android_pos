@@ -1,5 +1,6 @@
 package com.android.pos.ui.login
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -7,11 +8,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -30,31 +33,37 @@ import com.android.pos.R
 import com.android.pos.ui.AppViewModelProvider
 import com.android.pos.ui.components.PasswordTextField
 import com.android.pos.ui.navigation.NavigationDestination
+import com.android.pos.ui.theme.modifiers.noRippleClickable
 import kotlinx.coroutines.launch
 
 
 object LoginDestination : NavigationDestination {
     override val route = "login"
     override val titleRes = R.string.login_title
+    override val at: String? = null
 }
 
 @Composable
 fun LoginScreen(
     navigateToSignUpScreen: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    Scaffold() { innerPadding ->
+
+    Surface {
         LoginBody(
             navigateToSignUpScreen = navigateToSignUpScreen,
-            modifier = Modifier.padding(innerPadding),
+            modifier = modifier,
             onSubmit = {
                 coroutineScope.launch {
                     try {
                         viewModel.submit()
-                        Toast.makeText(context ,"Login success", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Login success", Toast.LENGTH_SHORT).show()
+                        navigateToHomeScreen()
                     } catch (e: Exception) {
                         Log.e("LoginScreen", e.message ?: "Unknown error")
                     }
@@ -80,6 +89,7 @@ fun LoginBody(
         when {
             uiState.errorMessage?.contains(LoginError.EMPTY_USERNAME) == true ->
                 LoginError.EMPTY_USERNAME.message
+
             uiState.errorMessage?.contains(LoginError.CREDENTIAL_INVALID) == true -> LoginError.CREDENTIAL_INVALID.message
             else -> ""
         }
@@ -89,6 +99,7 @@ fun LoginBody(
         when {
             uiState.errorMessage?.contains(LoginError.EMPTY_PASSWORD) == true ->
                 LoginError.EMPTY_PASSWORD.message
+
             else -> ""
         }
     }
@@ -141,7 +152,8 @@ fun LoginBody(
             fontSize = 12.sp,
             lineHeight = 12.sp,
             modifier = Modifier
-                .height(16.dp)
+                .height(16.dp),
+
         )
 
         PasswordTextField(
@@ -149,9 +161,37 @@ fun LoginBody(
             onValueChange = { onValueChange(uiState.inputState.copy(password = it)) },
             label = { Text("Password") },
             modifier = Modifier.fillMaxWidth(),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             shape = Shapes().small,
         )
+
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .height(32.dp)
+                .noRippleClickable {
+                    onValueChange(uiState.inputState.copy(isRememberMe = !uiState.inputState.isRememberMe))
+                }
+        ){
+            Checkbox(
+                checked= uiState.inputState.isRememberMe,
+                modifier = Modifier
+                    .padding(0.dp)
+                    .width(26.dp),
+                onCheckedChange = {
+                    onValueChange(uiState.inputState.copy(isRememberMe = !uiState.inputState.isRememberMe))
+                }
+            )
+            Text(
+                "remember me",
+                lineHeight = 16.sp,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .height(24.dp)
+                    .padding(bottom = 4.dp, start = 6.dp)
+            )
+        }
+
         Text(
             passwordErrorMessages,
             color = MaterialTheme.colorScheme.error,
@@ -160,6 +200,7 @@ fun LoginBody(
             modifier = Modifier
                 .height(16.dp)
         )
+
         Button(
             onClick = {
                 onSubmit()
