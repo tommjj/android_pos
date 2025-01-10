@@ -14,6 +14,12 @@ import com.android.pos.ui.home.HomeDestination
 import com.android.pos.ui.home.HomeScreen
 import com.android.pos.ui.login.LoginDestination
 import com.android.pos.ui.login.LoginScreen
+import com.android.pos.ui.products.ProductHomeDestination
+import com.android.pos.ui.products.ProductHomeScreen
+import com.android.pos.ui.profile.ProfileHomeDestination
+import com.android.pos.ui.profile.ProfileHomeScreen
+import com.android.pos.ui.shop.ShopHomeDestination
+import com.android.pos.ui.shop.ShopHomeScreen
 import com.android.pos.ui.signup.SignUpDestination
 import com.android.pos.ui.signup.SignUpScreen
 
@@ -76,6 +82,24 @@ fun AppNavGraph(
             ) {
                 HomeScreen()
             }
+
+            composable(
+                route = ProductHomeDestination.route
+            ) {
+                ProductHomeScreen()
+            }
+
+            composable(
+                route = ShopHomeDestination.route
+            ) {
+                ShopHomeScreen()
+            }
+
+            composable(
+                route = ProfileHomeDestination.route
+            ) {
+                ProfileHomeScreen()
+            }
         }
     }
 }
@@ -83,5 +107,5 @@ fun AppNavGraph(
 object AppDestination : NavigationDestination {
     override val route: String = "app"
     override val titleRes: Int = R.string.app_name
-    override val at: String? = null
+    override val routeGroup = null
 }

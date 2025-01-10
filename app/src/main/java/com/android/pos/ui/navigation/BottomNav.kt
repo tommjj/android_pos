@@ -17,14 +17,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.pos.R
 import com.android.pos.ui.home.HomeDestination
-import com.android.pos.ui.home.HomeScreen
+import com.android.pos.ui.products.ProductHomeDestination
+import com.android.pos.ui.profile.ProfileHomeDestination
+import com.android.pos.ui.shop.ShopHomeDestination
 
 fun dpFromPx(context: Context, px: Int): Float {
     return px / context.resources.displayMetrics.density
@@ -33,10 +33,9 @@ fun dpFromPx(context: Context, px: Int): Float {
 @Composable
 fun BottomNav(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navDestinations: NavigationDestination
 ) {
-
-
     val buttonPadding = dpFromPx(
         context = LocalContext.current,
         px = WindowInsets.systemBars.getBottom(LocalDensity.current)
@@ -47,36 +46,56 @@ fun BottomNav(
         contentPadding = PaddingValues(top = 0.dp, bottom = 0.dp),
     ) {
         Row(
-            modifier = modifier.height(50.dp).fillMaxWidth(),
+            modifier = modifier
+                .height(50.dp)
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
             BottomNavItem(
                 painter = painterResource(id = R.drawable.home),
-                title = "Home"
+                title = "Home",
+                active = navDestinations.routeGroup == RouteGroups.HOME,
+                onClick = {
+                    navController.navigate(HomeDestination.route)
+                }
             )
             BottomNavItem(
                 painter = painterResource(id = R.drawable.shopping),
-                title = "Shop"
+                title = "Shop",
+                active = navDestinations.routeGroup == RouteGroups.SHOP,
+                onClick = {
+                    navController.navigate(ShopHomeDestination.route)
+                }
             )
             BottomNavItem(
                 painter = painterResource(id = R.drawable.inventory),
-                title = "Products"
+                title = "Products",
+                active = navDestinations.routeGroup == RouteGroups.PRODUCTS,
+                onClick = {
+                    navController.navigate(ProductHomeDestination.route)
+                }
             )
             BottomNavItem(
                 painter = painterResource(id = R.drawable.account_circle),
-                title = "You"
+                title = "You",
+                active = navDestinations.routeGroup == RouteGroups.YOU,
+                onClick = {
+                    navController.navigate(ProfileHomeDestination.route)
+                }
             )
         }
     }
 }
+
 
 @Composable
 fun BottomNavItem(
     modifier: Modifier = Modifier,
     painter: Painter,
     title: String,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    active: Boolean = false
 ) {
     Button(
         onClick = onClick,
@@ -86,7 +105,7 @@ fun BottomNavItem(
         contentPadding = PaddingValues(0.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
-            contentColor = MaterialTheme.colorScheme.onBackground
+            contentColor = if (active) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
         )
     ) {
         Column(

@@ -2,4 +2,7 @@
     <string name="app_name">pos</string>
     <string name="login_title">Login</string>
     <string name="signup_title">Sign Up</string>
+    <string name="product_home_title">"products "</string>
+    <string name="shop_home_title">Shop</string>
+    <string name="profile_home_title">Profile</string>
 </resources>

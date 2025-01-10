@@ -20,16 +20,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.pos.R
 import com.android.pos.ui.AppViewModelProvider
 import com.android.pos.ui.navigation.NavigationDestination
+import com.android.pos.ui.navigation.RouteGroups
 
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
     override val titleRes = R.string.app_name
-    override val at = "home"
+    override val routeGroup = RouteGroups.HOME
 }
 
 @Composable
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),

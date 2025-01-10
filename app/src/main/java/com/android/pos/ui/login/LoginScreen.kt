@@ -40,7 +40,7 @@ import kotlinx.coroutines.launch
 object LoginDestination : NavigationDestination {
     override val route = "login"
     override val titleRes = R.string.login_title
-    override val at: String? = null
+    override val routeGroup = null
 }
 
 @Composable

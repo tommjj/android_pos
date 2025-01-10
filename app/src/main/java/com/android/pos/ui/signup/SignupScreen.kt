@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 object SignUpDestination : NavigationDestination {
     override val route = "SignUp"
     override val titleRes = R.string.signup_title
-    override val at: String? = null
+    override val routeGroup = null
 }
 
 @Composable

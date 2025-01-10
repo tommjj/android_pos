@@ -1,5 +1,12 @@
 package com.android.pos.ui.navigation
 
+enum class RouteGroups {
+    HOME,
+    SHOP,
+    PRODUCTS,
+    YOU
+}
+
 /**
  * Interface to describe the navigation destinations for the app
  */
@@ -17,5 +24,5 @@ interface NavigationDestination {
     /**
      * name of
      */
-    val at : String?
+    val routeGroup : RouteGroups?
 }
