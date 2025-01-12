@@ -31,7 +31,7 @@ data class OrderWithProducts(
     @Embedded val order: Order,
     @Relation(
         parentColumn = "id",
-        entityColumn = "productID",
+        entityColumn = "orderID",
     )
     val products: List<OrderProduct>
 )

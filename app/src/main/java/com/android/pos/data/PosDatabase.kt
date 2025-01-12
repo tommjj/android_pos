@@ -14,6 +14,12 @@ import androidx.room.TypeConverters
 )
 @TypeConverters(Converters::class)
 abstract class POSDatabase : RoomDatabase() {
+    abstract fun categoryDao(): CategoryDao
+
+    abstract fun productDao(): ProductDao
+
+    abstract fun orderDao(): OrderDao
+
     companion object {
         @Volatile
         private var Instance: POSDatabase? = null

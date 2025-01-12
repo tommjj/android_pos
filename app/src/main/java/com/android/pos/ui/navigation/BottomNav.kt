@@ -1,14 +1,11 @@
 package com.android.pos.ui.navigation
 
-import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,10 +22,7 @@ import com.android.pos.ui.home.HomeDestination
 import com.android.pos.ui.products.ProductHomeDestination
 import com.android.pos.ui.profile.ProfileHomeDestination
 import com.android.pos.ui.shop.ShopHomeDestination
-
-fun dpFromPx(context: Context, px: Int): Float {
-    return px / context.resources.displayMetrics.density
-}
+import com.android.pos.utils.dpFromPx
 
 @Composable
 fun BottomNav(

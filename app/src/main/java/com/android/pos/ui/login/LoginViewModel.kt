@@ -9,11 +9,15 @@ class LoginViewModel(
     private val auth: Auth,
     private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
-    var loginUiState by mutableStateOf(LoginUiState(
-        inputState = LoginInputsState(
-            username = sharedPreferences.getString("username", "") ?: "",
-            password = sharedPreferences.getString("password", "") ?: "",
-    )))
+    var loginUiState by mutableStateOf(
+        LoginUiState(
+            inputState = LoginInputsState(
+                username = sharedPreferences.getString("username", "") ?: "",
+                password = sharedPreferences.getString("password", "") ?: "",
+                isRememberMe = sharedPreferences.contains("username") && sharedPreferences.contains("password")
+            )
+        )
+    )
         private set
 
     fun onInputChanged(loginInputs: LoginInputsState) {
@@ -37,7 +41,7 @@ class LoginViewModel(
                 isValidate = false,
                 isPadding = false,
             )
-            throw Exception("Invalid input")
+            throw LoginError.INVALID_INPUT
         }
 
         val loginSuccess = auth.login(
@@ -50,7 +54,7 @@ class LoginViewModel(
                 isValidate = false,
                 isPadding = false
             )
-            throw Exception(LoginError.CREDENTIAL_INVALID.message)
+            throw LoginError.CREDENTIAL_INVALID
         }
 
         loginUiState = loginUiState.copy(
@@ -63,6 +67,11 @@ class LoginViewModel(
             sharedPreferences.edit()
                 .putString("username", loginUiState.inputState.username)
                 .putString("password", loginUiState.inputState.password)
+                .apply()
+        } else {
+            sharedPreferences.edit()
+                .remove("username")
+                .remove("password")
                 .apply()
         }
     }
@@ -80,8 +89,8 @@ fun LoginInputsState.isValid(): Boolean {
     return true
 }
 
-fun LoginInputsState.toLoginError(): List<LoginError>? {
-    val errors = mutableListOf<LoginError>()
+fun LoginInputsState.toLoginError(): List<Exception>? {
+    val errors = mutableListOf<Exception>()
     if (username.isEmpty()) errors.add(LoginError.EMPTY_USERNAME)
     if (password.isEmpty()) errors.add(LoginError.EMPTY_PASSWORD)
     if (errors.isNotEmpty()) return errors
@@ -91,12 +100,13 @@ fun LoginInputsState.toLoginError(): List<LoginError>? {
 data class LoginUiState(
     val inputState: LoginInputsState = LoginInputsState(),
     val isValidate: Boolean = false,
-    val errorMessage: List<LoginError>? = null,
+    val errorMessage: List<Exception>? = null,
     val isPadding: Boolean = false,
 )
 
-enum class LoginError(val message: String) {
-    EMPTY_USERNAME("Username is required"),
-    EMPTY_PASSWORD("Password is required"),
-    CREDENTIAL_INVALID("Username or password is invalid"),
+object LoginError {
+    val INVALID_INPUT = Exception("Invalid input")
+    val EMPTY_USERNAME = Exception("Username is required")
+    val EMPTY_PASSWORD = Exception("Password is required")
+    val CREDENTIAL_INVALID = Exception("Username or password is invalid")
 }

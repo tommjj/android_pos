@@ -24,10 +24,12 @@ val bottomNavDestinations = mapOf(
 
 @Composable
 fun POSApp(navController: NavHostController = rememberNavController()) {
+    val currentBackStack = navController.currentBackStackEntryAsState()
+
     Scaffold(
         bottomBar = {
             val currentDestinations: NavigationDestination? =
-                bottomNavDestinations[navController.currentBackStackEntryAsState().value?.destination?.route]
+                bottomNavDestinations[currentBackStack.value?.destination?.route]
 
             if (currentDestinations != null) {
                 BottomNav(

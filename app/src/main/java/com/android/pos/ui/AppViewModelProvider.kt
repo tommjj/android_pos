@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.android.pos.PosApplication
 import com.android.pos.ui.home.HomeViewModel
 import com.android.pos.ui.login.LoginViewModel
+import com.android.pos.ui.profile.ProfileHomeViewModel
 import com.android.pos.ui.signup.SignUpViewModel
 
 /**
@@ -30,7 +31,13 @@ object AppViewModelProvider {
 
         // initialise HomeViewModel
         initializer {
-            HomeViewModel(posApplication().auth)
+            HomeViewModel(
+                posApplication().auth
+            )
+        }
+
+        initializer {
+            ProfileHomeViewModel(posApplication().auth)
         }
     }
 }

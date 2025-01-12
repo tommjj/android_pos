@@ -88,9 +88,11 @@ fun LoginBody(
     val usernameErrorMessages = remember(uiState.errorMessage) {
         when {
             uiState.errorMessage?.contains(LoginError.EMPTY_USERNAME) == true ->
-                LoginError.EMPTY_USERNAME.message
+                LoginError.EMPTY_USERNAME.message ?: ""
 
-            uiState.errorMessage?.contains(LoginError.CREDENTIAL_INVALID) == true -> LoginError.CREDENTIAL_INVALID.message
+            uiState.errorMessage?.contains(LoginError.CREDENTIAL_INVALID) == true ->
+                LoginError.CREDENTIAL_INVALID.message ?: ""
+
             else -> ""
         }
     }
@@ -98,7 +100,7 @@ fun LoginBody(
     val passwordErrorMessages = remember(uiState.errorMessage) {
         when {
             uiState.errorMessage?.contains(LoginError.EMPTY_PASSWORD) == true ->
-                LoginError.EMPTY_PASSWORD.message
+                LoginError.EMPTY_PASSWORD.message ?: ""
 
             else -> ""
         }
@@ -154,7 +156,7 @@ fun LoginBody(
             modifier = Modifier
                 .height(16.dp),
 
-        )
+            )
 
         PasswordTextField(
             value = uiState.inputState.password,
@@ -165,16 +167,16 @@ fun LoginBody(
             shape = Shapes().small,
         )
 
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .height(32.dp)
                 .noRippleClickable {
                     onValueChange(uiState.inputState.copy(isRememberMe = !uiState.inputState.isRememberMe))
                 }
-        ){
+        ) {
             Checkbox(
-                checked= uiState.inputState.isRememberMe,
+                checked = uiState.inputState.isRememberMe,
                 modifier = Modifier
                     .padding(0.dp)
                     .width(26.dp),

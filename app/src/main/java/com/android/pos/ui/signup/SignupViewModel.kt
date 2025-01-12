@@ -1,5 +1,6 @@
 package com.android.pos.ui.signup
 
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.android.pos.data.User

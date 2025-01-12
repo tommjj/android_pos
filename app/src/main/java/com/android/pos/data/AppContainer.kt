@@ -8,7 +8,9 @@ interface IAppContainer {
     var dataContainer: IDataContainer?
 
     /**
-     * [initDataContainer] create new data container by username
+     * [initDataContainer] create new data container by id
+     *
+     * id = 0 means no data container
      */
     fun initDataContainer(id: Int)
 }
@@ -21,6 +23,10 @@ class AppContainer(private val context: Context) : IAppContainer {
     override var dataContainer: IDataContainer? = null
 
     override fun initDataContainer(id: Int) {
-        val db = POSDatabase.getDatabase(context, id.toString())
+        if (id == 0) {
+            dataContainer = null
+            return
+        }
+        dataContainer = DataContainer(context, id)
     }
 }

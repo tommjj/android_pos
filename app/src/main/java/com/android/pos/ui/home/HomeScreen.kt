@@ -1,6 +1,5 @@
 package com.android.pos.ui.home
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +21,6 @@ import com.android.pos.R
 import com.android.pos.ui.AppViewModelProvider
 import com.android.pos.ui.navigation.NavigationDestination
 import com.android.pos.ui.navigation.RouteGroups
-
 
 object HomeDestination : NavigationDestination {
     override val route = "home"
@@ -34,10 +33,12 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         topBar = {
             Row(
-                modifier = Modifier.height(56.dp).border(1.dp, color = Color.Red),
+                modifier = Modifier.height(0.dp).border(1.dp, color = Color.Red),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "Home")
@@ -51,6 +52,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "Welcome ${viewModel.getUserName()}", fontSize = 32.sp)
+
         }
     }
 }

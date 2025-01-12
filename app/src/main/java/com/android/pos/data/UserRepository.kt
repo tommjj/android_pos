@@ -21,7 +21,7 @@ interface UserRepository {
     /**
      * [insertUser] insert new user
      */
-    suspend fun insertUser(user: User)
+    suspend fun insertUser(user: User): Long
 
     /**
      * [deleteUser] delete user from the database

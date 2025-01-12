@@ -16,5 +16,6 @@ class PosApplication : Application() {
         super.onCreate()
         container = AppContainer(this)
         auth = Auth(container)
+
     }
 }

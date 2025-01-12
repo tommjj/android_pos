@@ -26,6 +26,7 @@ class Auth(private val appContainer: IAppContainer) {
     }
 
     fun logout() {
+        appContainer.initDataContainer(0)
         user = null
     }
 }

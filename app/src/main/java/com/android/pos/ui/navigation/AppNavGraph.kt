@@ -15,7 +15,7 @@ import com.android.pos.ui.home.HomeScreen
 import com.android.pos.ui.login.LoginDestination
 import com.android.pos.ui.login.LoginScreen
 import com.android.pos.ui.products.ProductHomeDestination
-import com.android.pos.ui.products.ProductHomeScreen
+import com.android.pos.ui.products.ProductsScreen
 import com.android.pos.ui.profile.ProfileHomeDestination
 import com.android.pos.ui.profile.ProfileHomeScreen
 import com.android.pos.ui.shop.ShopHomeDestination
@@ -61,10 +61,11 @@ fun AppNavGraph(
             )
         }
 
-        composable(route = SignUpDestination.route ) {
+        composable(route = SignUpDestination.route) {
             SignUpScreen(
                 navigateToLoginScreen = {
-                    navController.navigate(LoginDestination.route) {
+                    navController.navigate(LoginDestination.route)
+                    {
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
@@ -86,7 +87,7 @@ fun AppNavGraph(
             composable(
                 route = ProductHomeDestination.route
             ) {
-                ProductHomeScreen()
+                ProductsScreen()
             }
 
             composable(
@@ -98,7 +99,15 @@ fun AppNavGraph(
             composable(
                 route = ProfileHomeDestination.route
             ) {
-                ProfileHomeScreen()
+                ProfileHomeScreen(
+                    navigateToLogin = {
+                        navController.navigate(LoginDestination.route) {
+                            popUpTo(navController.graph.id) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
         }
     }
